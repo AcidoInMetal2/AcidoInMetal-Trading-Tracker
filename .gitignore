@@ -1,0 +1,32 @@
+## .gitignore para proyectos .NET / WPF (Visual Studio)
+
+# Carpetas de compilación
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+
+# Archivos de Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Archivos de NuGet
+*.nupkg
+**/packages/*
+!**/packages/build/
+
+# Resultados de compilación
+[Bb]uild/
+[Ll]og/
+*.log
+
+# Archivos temporales del SO
+Thumbs.db
+.DS_Store
+
+# Archivos de ReSharper (si lo usás en el futuro)
+_ReSharper*/
+*.[Rr]e[Ss]harper
