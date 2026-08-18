@@ -1,12 +1,146 @@
-﻿<Window x:Class="Acidoinmetal_Trading_Tracker.MainWindow"
+﻿<Window x:Class="AcidoInMetalTradingTracker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Acidoinmetal_Trading_Tracker"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        xmlns:views="clr-namespace:Acidoinmetal_Trading_Tracker.Views"
+        Title="AcidoInMetal Trading Tracker" Height="720" Width="1280"
+        Background="{StaticResource BgPrimary}"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI">
 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- SIDEBAR -->
+        <Border Grid.Column="0" Background="{StaticResource BgSidebar}"
+                BorderBrush="{StaticResource BorderColor}" BorderThickness="0,0,1,0">
+            <DockPanel LastChildFill="False">
+                <StackPanel DockPanel.Dock="Top" Margin="0,20,0,30">
+                    <TextBlock Text="ACIDOINMETAL" Foreground="{StaticResource AccentBlue}"
+                               FontWeight="Bold" FontSize="15" Margin="20,0,0,2"/>
+                    <TextBlock Text="TRADING TRACKER" Foreground="{StaticResource TextSecondary}"
+                               FontSize="10" Margin="20,0,0,0"/>
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Top">
+                    <RadioButton Content="📊  Dashboard" Style="{StaticResource NavButton}" IsChecked="True"/>
+                    <RadioButton Content="📈  Operaciones" Style="{StaticResource NavButton}"/>
+                    <RadioButton Content="📉  Gráficos" Style="{StaticResource NavButton}"/>
+                    <RadioButton Content="⚙️  Configuración" Style="{StaticResource NavButton}"/>
+                </StackPanel>
+
+                <TextBlock DockPanel.Dock="Bottom" Text="v0.1 — dev build"
+                           Foreground="{StaticResource TextSecondary}" FontSize="10"
+                           Margin="20,0,0,15" HorizontalAlignment="Left"/>
+            </DockPanel>
+        </Border>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <Grid Grid.Column="1" Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" x:Name="TxtTituloPantalla" Text="Dashboard" Foreground="{StaticResource TextPrimary}"
+                       FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+
+            <!-- DASHBOARD -->
+            <Grid x:Name="PanelDashboard" Grid.Row="1" Grid.RowSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <UniformGrid Grid.Row="0" Columns="4" Margin="0,0,0,25">
+                    <Border Style="{StaticResource SummaryCard}" Margin="0,0,15,0">
+                        <StackPanel>
+                            <TextBlock Text="BALANCE" Style="{StaticResource CardLabel}"/>
+                            <TextBlock x:Name="TxtBalance" Text="$12,450.30" Style="{StaticResource CardValue}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource SummaryCard}" Margin="0,0,15,0">
+                        <StackPanel>
+                            <TextBlock Text="P&amp;L HOY" Style="{StaticResource CardLabel}"/>
+                            <TextBlock x:Name="TxtPnL" Text="+$340.15" Foreground="{StaticResource ProfitGreen}" Style="{StaticResource CardValue}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource SummaryCard}" Margin="0,0,15,0">
+                        <StackPanel>
+                            <TextBlock Text="OPERACIONES ABIERTAS" Style="{StaticResource CardLabel}"/>
+                            <TextBlock x:Name="TxtAbiertas" Text="3" Style="{StaticResource CardValue}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource SummaryCard}">
+                        <StackPanel>
+                            <TextBlock Text="WIN RATE" Style="{StaticResource CardLabel}"/>
+                            <TextBlock x:Name="TxtWinRate" Text="68%" Style="{StaticResource CardValue}"/>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <Border Grid.Row="1" Background="{StaticResource BgCard}"
+                        BorderBrush="{StaticResource BorderColor}" BorderThickness="1" CornerRadius="8">
+                    <Grid Margin="15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Últimas operaciones" Foreground="{StaticResource TextPrimary}"
+                                   FontSize="14" FontWeight="SemiBold" Margin="5,0,0,10"/>
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5,0,0,10">
+                            <Button Content="🧠  Ir a Trader Status (provisorio)"
+                                    Click="BtnIrATraderStatus_Click"
+                                    Padding="12,6" Margin="0,0,10,0"/>
+                            <Button Content="🌍  Ir a Análisis Macro (provisorio)"
+                                    Click="BtnIrAAnalisisMacro_Click"
+                                    Padding="12,6"/>
+                        </StackPanel>
+
+                        <DataGrid Grid.Row="2" x:Name="GridOperaciones" Background="Transparent"
+                                  BorderThickness="0" AutoGenerateColumns="False" IsReadOnly="True"
+                                  GridLinesVisibility="None" HeadersVisibility="Column"
+                                  RowHeight="38">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha}" Width="*"/>
+                                <DataGridTextColumn Header="Activo" Binding="{Binding Activo}" Width="*"/>
+                                <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="*"/>
+                                <DataGridTextColumn Header="Resultado" Binding="{Binding Resultado}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- TRADER STATUS -->
+            <Grid x:Name="PanelTraderStatus" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Button Grid.Row="0" Content="🏠  Inicio" Click="BtnInicio_Click"
+                        HorizontalAlignment="Left" Margin="0,0,0,15" Padding="12,6"/>
+
+                <views:TraderStatusView Grid.Row="1" x:Name="VistaTraderStatus" />
+            </Grid>
+            <!-- ANÁLISIS MACRO -->
+            <Grid x:Name="PanelAnalisisMacro" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Button Grid.Row="0" Content="🏠  Inicio" Click="BtnInicio_Click"
+                        HorizontalAlignment="Left" Margin="0,0,0,15" Padding="12,6"/>                                                               
+
+                <views:AnalisisMacroView Grid.Row="1" x:Name="VistaAnalisisMacro" />
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
