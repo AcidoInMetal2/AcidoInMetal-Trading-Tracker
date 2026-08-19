@@ -28,13 +28,40 @@ namespace Acidoinmetal_Trading_Tracker.Services
 
         private static HttpClient CrearHttpClient()
         {
-            var cliente = new HttpClient();
+            // CheckCertificateRevocationList=false evita que la primera conexión
+            // HTTPS del proceso se quede esperando la validación online del
+            // certificado (puede tardar mucho más que el timeout en algunas redes).
+            // Es un trade-off aceptable acá: solo bajamos una imagen pública.
+            var handler = new HttpClientHandler
+            {
+                CheckCertificateRevocationList = false
+            };
+
+            var cliente = new HttpClient(handler);
             // Sin un User-Agent de navegador, algunos sitios (TradingView incluido)
             // devuelven error o una página distinta.
             cliente.DefaultRequestHeaders.UserAgent.ParseAdd(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AcidoInMetalTradingTracker/1.0");
             cliente.Timeout = TimeSpan.FromSeconds(20);
             return cliente;
+        }
+
+        /// <summary>
+        /// Dispara una conexión liviana apenas arranca la app, para que la
+        /// primera carga de imagen real del usuario no pague el costo de la
+        /// conexión "en frío" (DNS + TLS). Se llama en segundo plano, sin esperar.
+        /// </summary>
+        public static async Task PrecalentarAsync()
+        {
+            try
+            {
+                await _http.GetAsync("https://www.tradingview.com");
+            }
+            catch
+            {
+                // Si falla el precalentamiento no pasa nada: la carga real
+                // simplemente va a tardar un poco más la primera vez.
+            }
         }
 
         /// <summary>

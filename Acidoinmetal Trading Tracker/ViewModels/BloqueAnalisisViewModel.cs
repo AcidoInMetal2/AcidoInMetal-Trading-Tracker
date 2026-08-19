@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -68,9 +69,35 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
         // si falló por timeout la primera vez).
         public ICommand ReintentarCommand { get; }
 
+        // URL directa del .png (la que sacamos del meta-tag og:image). Se usa
+        // para poder abrirla en el navegador con un click sobre la imagen.
+        private string? _urlImagenDirecta;
+        public string? UrlImagenDirecta
+        {
+            get => _urlImagenDirecta;
+            private set { _urlImagenDirecta = value; OnPropertyChanged(); }
+        }
+
+        public ICommand AbrirImagenCommand { get; }
+
         public BloqueAnalisisViewModel()
         {
             ReintentarCommand = new RelayCommand(() => _ = CargarImagenAsync());
+            AbrirImagenCommand = new RelayCommand(AbrirImagenEnNavegador, () => !string.IsNullOrEmpty(UrlImagenDirecta));
+        }
+
+        private void AbrirImagenEnNavegador()
+        {
+            if (string.IsNullOrEmpty(UrlImagenDirecta)) return;
+            try
+            {
+                Process.Start(new ProcessStartInfo(UrlImagenDirecta) { UseShellExecute = true });
+            }
+            catch
+            {
+                // Si no se puede abrir el navegador por algún motivo del sistema,
+                // no queremos romper la app por eso.
+            }
         }
 
         private async Task CargarImagenAsync()
@@ -78,14 +105,18 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
             if (string.IsNullOrWhiteSpace(Link))
             {
                 ImagenPreview = null;
+                UrlImagenDirecta = null;
                 Estado = "Pegá un link de TradingView abajo";
                 MostrarReintentar = false;
+                CommandManager.InvalidateRequerySuggested();
                 return;
             }
 
             ImagenPreview = null;
+            UrlImagenDirecta = null;
             Estado = "Cargando imagen...";
             MostrarReintentar = false;
+            CommandManager.InvalidateRequerySuggested();
 
             string? urlImagen = await _imagenService.ObtenerUrlImagenAsync(Link);
 
@@ -106,6 +137,7 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
                 bitmap.Freeze();
 
                 ImagenPreview = bitmap;
+                UrlImagenDirecta = urlImagen;
                 Estado = string.Empty;
                 MostrarReintentar = false;
             }
@@ -113,6 +145,10 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
             {
                 Estado = "El link no devolvió una imagen válida.";
                 MostrarReintentar = true;
+            }
+            finally
+            {
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 

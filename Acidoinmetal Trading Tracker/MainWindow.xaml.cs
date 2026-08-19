@@ -16,6 +16,10 @@ namespace AcidoInMetalTradingTracker
             _databaseService = new DatabaseService();
             int sesionId = _databaseService.CrearSesion(DateTime.Now);
 
+            // Precalienta la conexión HTTPS para que la primera carga de imagen
+            // de TradingView no pague el costo de la conexión "en frío".
+            _ = TradingViewImageService.PrecalentarAsync();
+
             VistaTraderStatus.DataContext = new TraderStatusViewModel(_databaseService, sesionId);
             VistaAnalisisMacro.DataContext = new AnalisisMacroViewModel(_databaseService, sesionId);
         }

@@ -58,28 +58,39 @@
                                 BorderBrush="{StaticResource BorderColor}"
                                 BorderThickness="1" CornerRadius="4"
                                 Margin="0,0,0,6">
-                            <Grid>
-                                <Image Source="{Binding EurH1.ImagenPreview}" Stretch="Uniform" Margin="4"/>
-                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-                                    <TextBlock Text="{Binding EurH1.Estado}"
-                                               Foreground="{StaticResource TextSecondary}"
-                                               FontSize="11" TextWrapping="Wrap" TextAlignment="Center"/>
-                                    <Button Content="🔄 Reintentar"
-                                            Command="{Binding EurH1.ReintentarCommand}"
-                                            HorizontalAlignment="Center" Margin="0,8,0,0" Padding="8,3">
-                                        <Button.Style>
-                                            <Style TargetType="Button">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding EurH1.MostrarReintentar}" Value="True">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
+                            <Button Command="{Binding EurH1.AbrirImagenCommand}"
+                                    Background="Transparent" BorderThickness="0" Padding="0"
+                                    Cursor="Hand"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Grid>
+                                    <Image Source="{Binding EurH1.ImagenPreview}" Stretch="Uniform" Margin="4"/>
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                                        <TextBlock Text="{Binding EurH1.Estado}"
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   FontSize="11" TextWrapping="Wrap" TextAlignment="Center"/>
+                                        <Button Content="🔄 Reintentar"
+                                                Command="{Binding EurH1.ReintentarCommand}"
+                                                HorizontalAlignment="Center" Margin="0,8,0,0" Padding="8,3">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding EurH1.MostrarReintentar}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
                         </Border>
                         <TextBlock Text="Link" FontSize="11"
                                    Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
@@ -135,28 +146,39 @@
                                 BorderBrush="{StaticResource BorderColor}"
                                 BorderThickness="1" CornerRadius="4"
                                 Margin="0,0,0,6">
-                            <Grid>
-                                <Image Source="{Binding GbpH1.ImagenPreview}" Stretch="Uniform" Margin="4"/>
-                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-                                    <TextBlock Text="{Binding GbpH1.Estado}"
-                                               Foreground="{StaticResource TextSecondary}"
-                                               FontSize="11" TextWrapping="Wrap" TextAlignment="Center"/>
-                                    <Button Content="🔄 Reintentar"
-                                            Command="{Binding GbpH1.ReintentarCommand}"
-                                            HorizontalAlignment="Center" Margin="0,8,0,0" Padding="8,3">
-                                        <Button.Style>
-                                            <Style TargetType="Button">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding GbpH1.MostrarReintentar}" Value="True">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
+                            <Button Command="{Binding GbpH1.AbrirImagenCommand}"
+                                    Background="Transparent" BorderThickness="0" Padding="0"
+                                    Cursor="Hand"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Grid>
+                                    <Image Source="{Binding GbpH1.ImagenPreview}" Stretch="Uniform" Margin="4"/>
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                                        <TextBlock Text="{Binding GbpH1.Estado}"
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   FontSize="11" TextWrapping="Wrap" TextAlignment="Center"/>
+                                        <Button Content="🔄 Reintentar"
+                                                Command="{Binding GbpH1.ReintentarCommand}"
+                                                HorizontalAlignment="Center" Margin="0,8,0,0" Padding="8,3">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding GbpH1.MostrarReintentar}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
                         </Border>
                         <TextBlock Text="Link" FontSize="11"
                                    Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
