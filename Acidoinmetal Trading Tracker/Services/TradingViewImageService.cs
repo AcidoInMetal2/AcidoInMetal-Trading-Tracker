@@ -33,7 +33,7 @@ namespace Acidoinmetal_Trading_Tracker.Services
             // devuelven error o una página distinta.
             cliente.DefaultRequestHeaders.UserAgent.ParseAdd(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AcidoInMetalTradingTracker/1.0");
-            cliente.Timeout = TimeSpan.FromSeconds(10);
+            cliente.Timeout = TimeSpan.FromSeconds(20);
             return cliente;
         }
 

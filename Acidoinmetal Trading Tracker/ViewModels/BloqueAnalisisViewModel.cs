@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Acidoinmetal_Trading_Tracker.Services;
 
@@ -55,23 +56,43 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
             set { _estado = value; OnPropertyChanged(); }
         }
 
+        // Controla si se muestra el botón "Reintentar" (solo cuando hubo un error real).
+        private bool _mostrarReintentar;
+        public bool MostrarReintentar
+        {
+            get => _mostrarReintentar;
+            set { _mostrarReintentar = value; OnPropertyChanged(); }
+        }
+
+        // Permite reintentar aunque el link no haya cambiado (por ejemplo,
+        // si falló por timeout la primera vez).
+        public ICommand ReintentarCommand { get; }
+
+        public BloqueAnalisisViewModel()
+        {
+            ReintentarCommand = new RelayCommand(() => _ = CargarImagenAsync());
+        }
+
         private async Task CargarImagenAsync()
         {
             if (string.IsNullOrWhiteSpace(Link))
             {
                 ImagenPreview = null;
                 Estado = "Pegá un link de TradingView abajo";
+                MostrarReintentar = false;
                 return;
             }
 
             ImagenPreview = null;
             Estado = "Cargando imagen...";
+            MostrarReintentar = false;
 
             string? urlImagen = await _imagenService.ObtenerUrlImagenAsync(Link);
 
             if (urlImagen == null)
             {
                 Estado = "No se pudo cargar la imagen. Revisá el link.";
+                MostrarReintentar = true;
                 return;
             }
 
@@ -86,10 +107,12 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
 
                 ImagenPreview = bitmap;
                 Estado = string.Empty;
+                MostrarReintentar = false;
             }
             catch
             {
                 Estado = "El link no devolvió una imagen válida.";
+                MostrarReintentar = true;
             }
         }
 
