@@ -10,13 +10,18 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
         private readonly DatabaseService _databaseService;
         private readonly int _sesionId;
 
+        // Bloque H1 de cada divisa. A futuro se van a sumar más marcos
+        // temporales (H4, D1, etc.) siguiendo el mismo patrón.
+        public BloqueAnalisisViewModel EurH1 { get; } = new();
+        public BloqueAnalisisViewModel GbpH1 { get; } = new();
+
         public AnalisisMacroViewModel(DatabaseService databaseService, int sesionId)
         {
             _databaseService = databaseService;
             _sesionId = sesionId;
 
-            // Los campos de EUR y GBP que carguemos de acá en adelante
-            // se van a guardar contra este mismo _sesionId, para que
+            // TODO: cuando definamos cómo persistir estos datos, guardar
+            // EurH1.Link / GbpH1.Link contra este mismo _sesionId, para que
             // queden agrupados con Trader Status bajo la misma Fecha.
         }
 

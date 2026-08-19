@@ -31,7 +31,48 @@
                            Foreground="{StaticResource TextSecondary}"
                            Margin="0,2,0,20"/>
 
-                <!-- Acá van los campos de carga del análisis del Euro -->
+                <TextBlock Text="Análisis Macro:"
+                           FontSize="14" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimary}"
+                           Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Marco temporal (hoy fijo en H1, a futuro desplegable) -->
+                    <StackPanel Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Top">
+                        <TextBlock Text="Marco" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox Width="70" IsEnabled="False">
+                            <ComboBoxItem Content="{Binding EurH1.Macroview1}" IsSelected="True"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Preview de la imagen + campo de link -->
+                    <StackPanel Grid.Column="1">
+                        <Border Height="150"
+                                Background="{StaticResource BgPrimary}"
+                                BorderBrush="{StaticResource BorderColor}"
+                                BorderThickness="1" CornerRadius="4"
+                                Margin="0,0,0,6">
+                            <Grid>
+                                <Image Source="{Binding EurH1.ImagenPreview}" Stretch="Uniform" Margin="4"/>
+                                <TextBlock Text="{Binding EurH1.Estado}"
+                                           Foreground="{StaticResource TextSecondary}"
+                                           FontSize="11" TextWrapping="Wrap" TextAlignment="Center"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Margin="10"/>
+                            </Grid>
+                        </Border>
+                        <TextBlock Text="Link" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding EurH1.Link, UpdateSourceTrigger=LostFocus}"
+                                 Padding="6,5"/>
+                    </StackPanel>
+                </Grid>
 
             </StackPanel>
         </Border>
@@ -53,7 +94,48 @@
                            Foreground="{StaticResource TextSecondary}"
                            Margin="0,2,0,20"/>
 
-                <!-- Acá van los campos de carga del análisis de la Libra -->
+                <TextBlock Text="Análisis Macro:"
+                           FontSize="14" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimary}"
+                           Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Marco temporal (hoy fijo en H1, a futuro desplegable) -->
+                    <StackPanel Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Top">
+                        <TextBlock Text="Marco" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox Width="70" IsEnabled="False">
+                            <ComboBoxItem Content="{Binding GbpH1.Macroview1}" IsSelected="True"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Preview de la imagen + campo de link -->
+                    <StackPanel Grid.Column="1">
+                        <Border Height="150"
+                                Background="{StaticResource BgPrimary}"
+                                BorderBrush="{StaticResource BorderColor}"
+                                BorderThickness="1" CornerRadius="4"
+                                Margin="0,0,0,6">
+                            <Grid>
+                                <Image Source="{Binding GbpH1.ImagenPreview}" Stretch="Uniform" Margin="4"/>
+                                <TextBlock Text="{Binding GbpH1.Estado}"
+                                           Foreground="{StaticResource TextSecondary}"
+                                           FontSize="11" TextWrapping="Wrap" TextAlignment="Center"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Margin="10"/>
+                            </Grid>
+                        </Border>
+                        <TextBlock Text="Link" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding GbpH1.Link, UpdateSourceTrigger=LostFocus}"
+                                 Padding="6,5"/>
+                    </StackPanel>
+                </Grid>
 
             </StackPanel>
         </Border>
