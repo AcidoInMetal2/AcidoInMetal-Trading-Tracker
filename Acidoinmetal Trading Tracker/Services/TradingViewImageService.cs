@@ -65,6 +65,23 @@ namespace Acidoinmetal_Trading_Tracker.Services
         }
 
         /// <summary>
+        /// Descarga los bytes de una imagen (por ejemplo, el .png que sacamos
+        /// de ObtenerUrlImagenAsync) usando el mismo HttpClient ya precalentado,
+        /// en vez de dejar que WPF la baje por su cuenta con otro camino de red.
+        /// </summary>
+        public async Task<byte[]?> DescargarBytesAsync(string urlImagen)
+        {
+            try
+            {
+                return await _http.GetByteArrayAsync(urlImagen);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Devuelve la URL directa de la imagen .png, o null si no se pudo obtener
         /// (link inválido, sin conexión, o la página no tiene el meta-tag esperado).
         /// </summary>

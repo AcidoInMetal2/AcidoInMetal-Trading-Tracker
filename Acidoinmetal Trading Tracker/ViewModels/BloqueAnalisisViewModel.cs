@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -129,11 +130,23 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
 
             try
             {
+                byte[]? bytesImagen = await _imagenService.DescargarBytesAsync(urlImagen);
+
+                if (bytesImagen == null)
+                {
+                    Estado = "Se encontró la imagen pero no se pudo descargar. Probá reintentar.";
+                    MostrarReintentar = true;
+                    return;
+                }
+
                 var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(urlImagen, UriKind.Absolute);
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
+                using (var stream = new MemoryStream(bytesImagen))
+                {
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.StreamSource = stream;
+                    bitmap.EndInit();
+                }
                 bitmap.Freeze();
 
                 ImagenPreview = bitmap;
