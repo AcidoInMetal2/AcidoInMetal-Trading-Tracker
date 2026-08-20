@@ -120,7 +120,7 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
         }
 
         // ===================== Estado del Rango =====================
-        public string[] OpcionesEstadoRango { get; } = { "Iniciado", "En Progreso", "Finalizando", "A Confirmar" };
+        public string[] OpcionesEstadoRango { get; } = { "Iniciando", "En Progreso", "Finalizando", "A Confirmar" };
 
         private string? _estadoRango;
         public string? EstadoRango
