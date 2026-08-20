@@ -42,13 +42,13 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Marco temporal (hoy fijo en H1, a futuro desplegable) -->
+                    <!-- Marco temporal -->
                     <StackPanel Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Top">
                         <TextBlock Text="Marco" FontSize="11"
                                    Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
-                        <ComboBox Width="70" IsEnabled="False">
-                            <ComboBoxItem Content="{Binding EurH1.Macroview1}" IsSelected="True"/>
-                        </ComboBox>
+                        <ComboBox Width="90"
+                                  ItemsSource="{Binding EurH1.OpcionesMarco}"
+                                  SelectedItem="{Binding EurH1.Macroview1}"/>
                     </StackPanel>
 
                     <!-- Preview de la imagen + campo de link -->
@@ -99,6 +99,47 @@
                     </StackPanel>
                 </Grid>
 
+                <!-- Rango Operativo (1-2 / 2-3 / 3-4, seleccion excluyente) -->
+                <TextBlock Text="Rango Operativo" FontSize="11"
+                           Foreground="{StaticResource TextSecondary}" Margin="0,15,0,4"/>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="1-2" IsChecked="{Binding EurH1.Rango12}"
+                              Foreground="{StaticResource TextPrimary}" Margin="0,0,20,0"/>
+                    <CheckBox Content="2-3" IsChecked="{Binding EurH1.Rango23}"
+                              Foreground="{StaticResource TextPrimary}" Margin="0,0,20,0"/>
+                    <CheckBox Content="3-4" IsChecked="{Binding EurH1.Rango34}"
+                              Foreground="{StaticResource TextPrimary}"/>
+                </StackPanel>
+
+                <!-- Estado del Rango + Dirección, mismo renglón -->
+                <Grid Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Estado del Rango" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding EurH1.OpcionesEstadoRango}"
+                                  SelectedItem="{Binding EurH1.EstadoRango}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Dirección" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding EurH1.OpcionesDireccion}"
+                                  SelectedItem="{Binding EurH1.Direccion}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Comentarios -->
+                <TextBlock Text="Comentarios" FontSize="11"
+                           Foreground="{StaticResource TextSecondary}" Margin="0,15,0,4"/>
+                <TextBox Text="{Binding EurH1.Comentarios, UpdateSourceTrigger=LostFocus}"
+                         AcceptsReturn="True" TextWrapping="Wrap"
+                         Height="70" Padding="6,5"
+                         VerticalScrollBarVisibility="Auto"/>
+
             </StackPanel>
         </Border>
 
@@ -130,13 +171,13 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Marco temporal (hoy fijo en H1, a futuro desplegable) -->
+                    <!-- Marco temporal -->
                     <StackPanel Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Top">
                         <TextBlock Text="Marco" FontSize="11"
                                    Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
-                        <ComboBox Width="70" IsEnabled="False">
-                            <ComboBoxItem Content="{Binding GbpH1.Macroview1}" IsSelected="True"/>
-                        </ComboBox>
+                        <ComboBox Width="90"
+                                  ItemsSource="{Binding GbpH1.OpcionesMarco}"
+                                  SelectedItem="{Binding GbpH1.Macroview1}"/>
                     </StackPanel>
 
                     <!-- Preview de la imagen + campo de link -->
@@ -186,6 +227,47 @@
                                  Padding="6,5"/>
                     </StackPanel>
                 </Grid>
+
+                <!-- Rango Operativo (1-2 / 2-3 / 3-4, seleccion excluyente) -->
+                <TextBlock Text="Rango Operativo" FontSize="11"
+                           Foreground="{StaticResource TextSecondary}" Margin="0,15,0,4"/>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="1-2" IsChecked="{Binding GbpH1.Rango12}"
+                              Foreground="{StaticResource TextPrimary}" Margin="0,0,20,0"/>
+                    <CheckBox Content="2-3" IsChecked="{Binding GbpH1.Rango23}"
+                              Foreground="{StaticResource TextPrimary}" Margin="0,0,20,0"/>
+                    <CheckBox Content="3-4" IsChecked="{Binding GbpH1.Rango34}"
+                              Foreground="{StaticResource TextPrimary}"/>
+                </StackPanel>
+
+                <!-- Estado del Rango + Dirección, mismo renglón -->
+                <Grid Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Estado del Rango" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding GbpH1.OpcionesEstadoRango}"
+                                  SelectedItem="{Binding GbpH1.EstadoRango}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Dirección" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding GbpH1.OpcionesDireccion}"
+                                  SelectedItem="{Binding GbpH1.Direccion}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Comentarios -->
+                <TextBlock Text="Comentarios" FontSize="11"
+                           Foreground="{StaticResource TextSecondary}" Margin="0,15,0,4"/>
+                <TextBox Text="{Binding GbpH1.Comentarios, UpdateSourceTrigger=LostFocus}"
+                         AcceptsReturn="True" TextWrapping="Wrap"
+                         Height="70" Padding="6,5"
+                         VerticalScrollBarVisibility="Auto"/>
 
             </StackPanel>
         </Border>

@@ -19,15 +19,18 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
     {
         private readonly TradingViewImageService _imagenService = new();
 
-        // Por ahora queda fijo en "H1". El nombre se mantiene "Macroview1" porque
-        // a futuro esto va a pasar a ser un ComboBox editable con varias opciones
-        // (H1, H4, D1, etc.) sin tener que renombrar la propiedad.
+        // Por ahora queda fijo en "H1" al arrancar. El nombre se mantiene
+        // "Macroview1" por pedido explícito, pensando en la evolución futura
+        // del concepto (Macroview2, etc. si hiciera falta más adelante).
         private string _macroview1 = "H1";
         public string Macroview1
         {
             get => _macroview1;
             set { _macroview1 = value; OnPropertyChanged(); }
         }
+
+        // Opciones fijas del desplegable de Marco temporal.
+        public string[] OpcionesMarco { get; } = { "H1", "H4", "Diario", "Mensual" };
 
         private string _link = string.Empty;
         public string Link
@@ -80,6 +83,69 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
         }
 
         public ICommand AbrirImagenCommand { get; }
+
+        // ===================== Rango Operativo =====================
+        // Estructura del gráfico: 1-2 = impulso inicial, 2-3 = retroceso,
+        // 3-4 = nuevo impulso. Selección excluyente entre las tres.
+        private string? _rangoOperativo;
+        public string? RangoOperativo
+        {
+            get => _rangoOperativo;
+            set
+            {
+                _rangoOperativo = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Rango12));
+                OnPropertyChanged(nameof(Rango23));
+                OnPropertyChanged(nameof(Rango34));
+            }
+        }
+
+        public bool Rango12
+        {
+            get => RangoOperativo == "1-2";
+            set => RangoOperativo = value ? "1-2" : (RangoOperativo == "1-2" ? null : RangoOperativo);
+        }
+
+        public bool Rango23
+        {
+            get => RangoOperativo == "2-3";
+            set => RangoOperativo = value ? "2-3" : (RangoOperativo == "2-3" ? null : RangoOperativo);
+        }
+
+        public bool Rango34
+        {
+            get => RangoOperativo == "3-4";
+            set => RangoOperativo = value ? "3-4" : (RangoOperativo == "3-4" ? null : RangoOperativo);
+        }
+
+        // ===================== Estado del Rango =====================
+        public string[] OpcionesEstadoRango { get; } = { "Iniciado", "En Progreso", "Finalizando", "A Confirmar" };
+
+        private string? _estadoRango;
+        public string? EstadoRango
+        {
+            get => _estadoRango;
+            set { _estadoRango = value; OnPropertyChanged(); }
+        }
+
+        // ===================== Dirección =====================
+        public string[] OpcionesDireccion { get; } = { "COMPRAS", "VENTAS", "SIN DEFINIR" };
+
+        private string _direccion = "SIN DEFINIR";
+        public string Direccion
+        {
+            get => _direccion;
+            set { _direccion = value; OnPropertyChanged(); }
+        }
+
+        // ===================== Comentarios =====================
+        private string _comentarios = string.Empty;
+        public string Comentarios
+        {
+            get => _comentarios;
+            set { _comentarios = value; OnPropertyChanged(); }
+        }
 
         public BloqueAnalisisViewModel()
         {
