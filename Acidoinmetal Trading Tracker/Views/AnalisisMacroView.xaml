@@ -49,9 +49,6 @@
                                         <DataTrigger Binding="{Binding EurH1.Direccion}" Value="VENTAS">
                                             <Setter Property="Foreground" Value="#F44336"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding EurH1.Direccion}" Value="SIN DEFINIR">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -67,6 +64,10 @@
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding EurH1.Direccion}" Value="VENTAS">
                                             <Setter Property="Source" Value="{StaticResource IconoBajista}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EurH1.Direccion}" Value="SIN DEFINIR">
+                                            <Setter Property="Source" Value="{StaticResource IconoSinDefinir}"/>
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -228,9 +229,6 @@
                                         <DataTrigger Binding="{Binding GbpH1.Direccion}" Value="VENTAS">
                                             <Setter Property="Foreground" Value="#F44336"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding GbpH1.Direccion}" Value="SIN DEFINIR">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -246,6 +244,10 @@
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding GbpH1.Direccion}" Value="VENTAS">
                                             <Setter Property="Source" Value="{StaticResource IconoBajista}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding GbpH1.Direccion}" Value="SIN DEFINIR">
+                                            <Setter Property="Source" Value="{StaticResource IconoSinDefinir}"/>
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
