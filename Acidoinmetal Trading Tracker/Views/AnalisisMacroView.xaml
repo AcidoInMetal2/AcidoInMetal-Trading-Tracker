@@ -22,10 +22,60 @@
                 CornerRadius="8"
                 Padding="20">
             <StackPanel>
-                <TextBlock Text="EURO"
-                           FontSize="32"
-                           FontWeight="Bold"
-                           Foreground="{StaticResource AccentBlue}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="EURO"
+                               FontSize="32"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource AccentBlue}"/>
+
+                    <!-- Indicador de Dirección: texto + icono, solo visible con COMPRAS o VENTAS -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Margin="10,0,0,0">
+                        <TextBlock Text="{Binding EurH1.Direccion}"
+                                   FontSize="16" FontWeight="Bold"
+                                   VerticalAlignment="Center" Margin="0,0,8,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EurH1.Direccion}" Value="COMPRAS">
+                                            <Setter Property="Foreground" Value="#4CAF50"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EurH1.Direccion}" Value="VENTAS">
+                                            <Setter Property="Foreground" Value="#F44336"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EurH1.Direccion}" Value="SIN DEFINIR">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Image Width="28" Height="28" VerticalAlignment="Center">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EurH1.Direccion}" Value="COMPRAS">
+                                            <Setter Property="Source" Value="{StaticResource IconoAlcista}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EurH1.Direccion}" Value="VENTAS">
+                                            <Setter Property="Source" Value="{StaticResource IconoBajista}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </StackPanel>
+                </Grid>
+
                 <TextBlock Text="(EUR/USD)"
                            FontSize="16"
                            Foreground="{StaticResource TextSecondary}"
@@ -151,10 +201,60 @@
                 CornerRadius="8"
                 Padding="20">
             <StackPanel>
-                <TextBlock Text="LIBRA"
-                           FontSize="32"
-                           FontWeight="Bold"
-                           Foreground="{StaticResource AccentBlue}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="LIBRA"
+                               FontSize="32"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource AccentBlue}"/>
+
+                    <!-- Indicador de Dirección: texto + icono, solo visible con COMPRAS o VENTAS -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Margin="10,0,0,0">
+                        <TextBlock Text="{Binding GbpH1.Direccion}"
+                                   FontSize="16" FontWeight="Bold"
+                                   VerticalAlignment="Center" Margin="0,0,8,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GbpH1.Direccion}" Value="COMPRAS">
+                                            <Setter Property="Foreground" Value="#4CAF50"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding GbpH1.Direccion}" Value="VENTAS">
+                                            <Setter Property="Foreground" Value="#F44336"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding GbpH1.Direccion}" Value="SIN DEFINIR">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Image Width="28" Height="28" VerticalAlignment="Center">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GbpH1.Direccion}" Value="COMPRAS">
+                                            <Setter Property="Source" Value="{StaticResource IconoAlcista}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding GbpH1.Direccion}" Value="VENTAS">
+                                            <Setter Property="Source" Value="{StaticResource IconoBajista}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </StackPanel>
+                </Grid>
+
                 <TextBlock Text="(GBP/USD)"
                            FontSize="16"
                            Foreground="{StaticResource TextSecondary}"

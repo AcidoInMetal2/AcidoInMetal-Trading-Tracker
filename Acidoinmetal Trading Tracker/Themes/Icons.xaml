@@ -1,0 +1,62 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Icono alcista (Direccion = COMPRAS): barras + flecha ascendente -->
+    <DrawingImage x:Key="IconoAlcista">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#4CAF50">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+                            <RectangleGeometry Rect="40,21,4,23"/>
+                            <RectangleGeometry Rect="34,28,4,16"/>
+                            <RectangleGeometry Rect="28,23,4,21"/>
+                            <RectangleGeometry Rect="22,29,4,15"/>
+                            <RectangleGeometry Rect="16,32,4,12"/>
+                            <RectangleGeometry Rect="10,30,4,14"/>
+                            <RectangleGeometry Rect="4,34,4,10"/>
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#388E3C">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+                            <PathGeometry Figures="M40.1,9.1 L34,15.2 30,11.2 20,21.2 15,16.2 4.6,26.6 7.4,29.4 15,21.8 20,26.8 30,16.8 34,20.8 42.9,11.9 Z"/>
+                            <PathGeometry Figures="M44,8 L35,8 44,17 Z"/>
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- Icono bajista (Direccion = VENTAS): barras + flecha descendente -->
+    <DrawingImage x:Key="IconoBajista">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="#F44336">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+                            <RectangleGeometry Rect="40,34,4,10"/>
+                            <RectangleGeometry Rect="34,29,4,15"/>
+                            <RectangleGeometry Rect="28,33,4,11"/>
+                            <RectangleGeometry Rect="22,25,4,19"/>
+                            <RectangleGeometry Rect="16,28,4,16"/>
+                            <RectangleGeometry Rect="10,24,4,20"/>
+                            <RectangleGeometry Rect="4,19,4,25"/>
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="#D32F2F">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+                            <PathGeometry Figures="M34,13.2 L30,17.2 20,7.2 15,12.2 7.4,4.6 4.6,7.4 15,17.8 20,12.8 30,22.8 34,18.8 40.1,24.9 42.9,22.1 Z"/>
+                            <PathGeometry Figures="M44,26 L35,26 44,17 Z"/>
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+</ResourceDictionary>
