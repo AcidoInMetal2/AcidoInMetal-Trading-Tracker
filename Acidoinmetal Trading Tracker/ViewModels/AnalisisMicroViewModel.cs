@@ -5,25 +5,25 @@ using Acidoinmetal_Trading_Tracker.Services;
 
 namespace Acidoinmetal_Trading_Tracker.ViewModels
 {
-    public class AnalisisMacroViewModel : INotifyPropertyChanged
+    public class AnalisisMicroViewModel : INotifyPropertyChanged
     {
         private readonly DatabaseService _databaseService;
         private readonly int _sesionId;
 
-        private static readonly string[] OpcionesMarcoMacro = { "H1", "H4", "Diario", "Mensual" };
+        private static readonly string[] OpcionesMarcoMicro = { "M15", "M5", "M3", "M2" };
 
-        // Bloque de cada divisa, con las opciones de marco de Análisis Macro.
-        public BloqueAnalisisViewModel EurH1 { get; } = new(OpcionesMarcoMacro);
-        public BloqueAnalisisViewModel GbpH1 { get; } = new(OpcionesMarcoMacro);
+        // Bloque de cada divisa, con las opciones de marco de Análisis Micro.
+        public BloqueAnalisisViewModel EurMicro { get; } = new(OpcionesMarcoMicro);
+        public BloqueAnalisisViewModel GbpMicro { get; } = new(OpcionesMarcoMicro);
 
-        public AnalisisMacroViewModel(DatabaseService databaseService, int sesionId)
+        public AnalisisMicroViewModel(DatabaseService databaseService, int sesionId)
         {
             _databaseService = databaseService;
             _sesionId = sesionId;
 
             // TODO: cuando definamos cómo persistir estos datos, guardar
-            // EurH1.Link / GbpH1.Link contra este mismo _sesionId, para que
-            // queden agrupados con Trader Status bajo la misma Fecha.
+            // EurMicro.Link / GbpMicro.Link contra este mismo _sesionId, para
+            // que queden agrupados con el resto bajo la misma Fecha.
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

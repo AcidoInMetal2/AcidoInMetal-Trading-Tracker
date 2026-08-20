@@ -99,6 +99,9 @@
                                     Padding="12,6" Margin="0,0,10,0"/>
                             <Button Content="🌍  Ir a Análisis Macro (provisorio)"
                                     Click="BtnIrAAnalisisMacro_Click"
+                                    Padding="12,6" Margin="0,0,10,0"/>
+                            <Button Content="🔬  Ir a Análisis Micro (provisorio)"
+                                    Click="BtnIrAAnalisisMicro_Click"
                                     Padding="12,6"/>
                         </StackPanel>
 
@@ -140,6 +143,18 @@
                         HorizontalAlignment="Left" Margin="0,0,0,15" Padding="12,6"/>                                                               
 
                 <views:AnalisisMacroView Grid.Row="1" x:Name="VistaAnalisisMacro" />
+            </Grid>
+            <!-- ANÁLISIS MICRO -->
+            <Grid x:Name="PanelAnalisisMicro" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Button Grid.Row="0" Content="🏠  Inicio" Click="BtnInicio_Click"
+                        HorizontalAlignment="Left" Margin="0,0,0,15" Padding="12,6"/>
+
+                <views:AnalisisMicroView Grid.Row="1" x:Name="VistaAnalisisMicro" />
             </Grid>
         </Grid>
     </Grid>

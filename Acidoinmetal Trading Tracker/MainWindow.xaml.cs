@@ -22,6 +22,7 @@ namespace AcidoInMetalTradingTracker
 
             VistaTraderStatus.DataContext = new TraderStatusViewModel(_databaseService, sesionId);
             VistaAnalisisMacro.DataContext = new AnalisisMacroViewModel(_databaseService, sesionId);
+            VistaAnalisisMicro.DataContext = new AnalisisMicroViewModel(_databaseService, sesionId);
         }
 
         private void BtnIrATraderStatus_Click(object sender, RoutedEventArgs e)
@@ -38,10 +39,18 @@ namespace AcidoInMetalTradingTracker
             TxtTituloPantalla.Text = "Análisis Macro";
         }
 
+        private void BtnIrAAnalisisMicro_Click(object sender, RoutedEventArgs e)
+        {
+            PanelDashboard.Visibility = Visibility.Collapsed;
+            PanelAnalisisMicro.Visibility = Visibility.Visible;
+            TxtTituloPantalla.Text = "Análisis Micro";
+        }
+
         private void BtnInicio_Click(object sender, RoutedEventArgs e)
         {
             PanelTraderStatus.Visibility = Visibility.Collapsed;
             PanelAnalisisMacro.Visibility = Visibility.Collapsed;
+            PanelAnalisisMicro.Visibility = Visibility.Collapsed;
             PanelDashboard.Visibility = Visibility.Visible;
             TxtTituloPantalla.Text = "Dashboard";
         }

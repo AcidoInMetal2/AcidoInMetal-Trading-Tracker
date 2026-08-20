@@ -1,0 +1,377 @@
+<UserControl x:Class="Acidoinmetal_Trading_Tracker.Views.AnalisisMicroView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1100"
+             Background="{StaticResource BgPrimary}">
+
+    <Grid Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="16"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ===================== COLUMNA EURO ===================== -->
+        <Border Grid.Column="0"
+                Background="{StaticResource BgCard}"
+                BorderBrush="{StaticResource BorderColor}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="20">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="EURO"
+                               FontSize="32"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource AccentBlue}"/>
+
+                    <!-- Indicador de Dirección: texto + icono, solo visible con COMPRAS o VENTAS -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Margin="10,0,0,0">
+                        <TextBlock Text="{Binding EurMicro.Direccion}"
+                                   FontSize="16" FontWeight="Bold"
+                                   VerticalAlignment="Center" Margin="0,0,8,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EurMicro.Direccion}" Value="COMPRAS">
+                                            <Setter Property="Foreground" Value="#4CAF50"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EurMicro.Direccion}" Value="VENTAS">
+                                            <Setter Property="Foreground" Value="#F44336"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Image Width="28" Height="28" VerticalAlignment="Center">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EurMicro.Direccion}" Value="COMPRAS">
+                                            <Setter Property="Source" Value="{StaticResource IconoAlcista}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EurMicro.Direccion}" Value="VENTAS">
+                                            <Setter Property="Source" Value="{StaticResource IconoBajista}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EurMicro.Direccion}" Value="SIN DEFINIR">
+                                            <Setter Property="Source" Value="{StaticResource IconoSinDefinir}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Text="(EUR/USD)"
+                           FontSize="16"
+                           Foreground="{StaticResource TextSecondary}"
+                           Margin="0,2,0,20"/>
+
+                <TextBlock Text="Análisis Micro:"
+                           FontSize="14" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimary}"
+                           Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Marco temporal -->
+                    <StackPanel Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Top">
+                        <TextBlock Text="Marco" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox Width="90"
+                                  ItemsSource="{Binding EurMicro.OpcionesMarco}"
+                                  SelectedItem="{Binding EurMicro.Macroview1}"/>
+                    </StackPanel>
+
+                    <!-- Preview de la imagen + campo de link -->
+                    <StackPanel Grid.Column="1">
+                        <Border Height="150"
+                                Background="{StaticResource BgPrimary}"
+                                BorderBrush="{StaticResource BorderColor}"
+                                BorderThickness="1" CornerRadius="4"
+                                Margin="0,0,0,6">
+                            <Button Command="{Binding EurMicro.AbrirImagenCommand}"
+                                    Background="Transparent" BorderThickness="0" Padding="0"
+                                    Cursor="Hand"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Grid>
+                                    <Image Source="{Binding EurMicro.ImagenPreview}" Stretch="Uniform" Margin="4"/>
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                                        <TextBlock Text="{Binding EurMicro.Estado}"
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   FontSize="11" TextWrapping="Wrap" TextAlignment="Center"/>
+                                        <Button Content="🔄 Reintentar"
+                                                Command="{Binding EurMicro.ReintentarCommand}"
+                                                HorizontalAlignment="Center" Margin="0,8,0,0" Padding="8,3">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding EurMicro.MostrarReintentar}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+                        </Border>
+                        <TextBlock Text="Link" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding EurMicro.Link, UpdateSourceTrigger=LostFocus}"
+                                 Padding="6,5"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Rango Operativo (1-2 / 2-3 / 3-4, seleccion excluyente) -->
+                <TextBlock Text="Rango Operativo" FontSize="11"
+                           Foreground="{StaticResource TextSecondary}" Margin="0,15,0,4"/>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="1-2" IsChecked="{Binding EurMicro.Rango12}"
+                              Foreground="{StaticResource TextPrimary}" Margin="0,0,20,0"/>
+                    <CheckBox Content="2-3" IsChecked="{Binding EurMicro.Rango23}"
+                              Foreground="{StaticResource TextPrimary}" Margin="0,0,20,0"/>
+                    <CheckBox Content="3-4" IsChecked="{Binding EurMicro.Rango34}"
+                              Foreground="{StaticResource TextPrimary}"/>
+                </StackPanel>
+
+                <!-- Estado del Rango + Dirección, mismo renglón -->
+                <Grid Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Estado del Rango" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding EurMicro.OpcionesEstadoRango}"
+                                  SelectedItem="{Binding EurMicro.EstadoRango}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Dirección" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding EurMicro.OpcionesDireccion}"
+                                  SelectedItem="{Binding EurMicro.Direccion}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Comentarios -->
+                <TextBlock Text="Comentarios" FontSize="11"
+                           Foreground="{StaticResource TextSecondary}" Margin="0,15,0,4"/>
+                <TextBox Text="{Binding EurMicro.Comentarios, UpdateSourceTrigger=LostFocus}"
+                         AcceptsReturn="True" TextWrapping="Wrap"
+                         Height="70" Padding="6,5"
+                         VerticalScrollBarVisibility="Auto"/>
+
+            </StackPanel>
+        </Border>
+
+        <!-- ===================== COLUMNA LIBRA ===================== -->
+        <Border Grid.Column="2"
+                Background="{StaticResource BgCard}"
+                BorderBrush="{StaticResource BorderColor}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="20">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="LIBRA"
+                               FontSize="32"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource AccentBlue}"/>
+
+                    <!-- Indicador de Dirección: texto + icono, solo visible con COMPRAS o VENTAS -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Margin="10,0,0,0">
+                        <TextBlock Text="{Binding GbpMicro.Direccion}"
+                                   FontSize="16" FontWeight="Bold"
+                                   VerticalAlignment="Center" Margin="0,0,8,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GbpMicro.Direccion}" Value="COMPRAS">
+                                            <Setter Property="Foreground" Value="#4CAF50"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding GbpMicro.Direccion}" Value="VENTAS">
+                                            <Setter Property="Foreground" Value="#F44336"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Image Width="28" Height="28" VerticalAlignment="Center">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GbpMicro.Direccion}" Value="COMPRAS">
+                                            <Setter Property="Source" Value="{StaticResource IconoAlcista}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding GbpMicro.Direccion}" Value="VENTAS">
+                                            <Setter Property="Source" Value="{StaticResource IconoBajista}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding GbpMicro.Direccion}" Value="SIN DEFINIR">
+                                            <Setter Property="Source" Value="{StaticResource IconoSinDefinir}"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Text="(GBP/USD)"
+                           FontSize="16"
+                           Foreground="{StaticResource TextSecondary}"
+                           Margin="0,2,0,20"/>
+
+                <TextBlock Text="Análisis Micro:"
+                           FontSize="14" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimary}"
+                           Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Marco temporal -->
+                    <StackPanel Grid.Column="0" Margin="0,0,15,0" VerticalAlignment="Top">
+                        <TextBlock Text="Marco" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox Width="90"
+                                  ItemsSource="{Binding GbpMicro.OpcionesMarco}"
+                                  SelectedItem="{Binding GbpMicro.Macroview1}"/>
+                    </StackPanel>
+
+                    <!-- Preview de la imagen + campo de link -->
+                    <StackPanel Grid.Column="1">
+                        <Border Height="150"
+                                Background="{StaticResource BgPrimary}"
+                                BorderBrush="{StaticResource BorderColor}"
+                                BorderThickness="1" CornerRadius="4"
+                                Margin="0,0,0,6">
+                            <Button Command="{Binding GbpMicro.AbrirImagenCommand}"
+                                    Background="Transparent" BorderThickness="0" Padding="0"
+                                    Cursor="Hand"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Grid>
+                                    <Image Source="{Binding GbpMicro.ImagenPreview}" Stretch="Uniform" Margin="4"/>
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                                        <TextBlock Text="{Binding GbpMicro.Estado}"
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   FontSize="11" TextWrapping="Wrap" TextAlignment="Center"/>
+                                        <Button Content="🔄 Reintentar"
+                                                Command="{Binding GbpMicro.ReintentarCommand}"
+                                                HorizontalAlignment="Center" Margin="0,8,0,0" Padding="8,3">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding GbpMicro.MostrarReintentar}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+                        </Border>
+                        <TextBlock Text="Link" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding GbpMicro.Link, UpdateSourceTrigger=LostFocus}"
+                                 Padding="6,5"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Rango Operativo (1-2 / 2-3 / 3-4, seleccion excluyente) -->
+                <TextBlock Text="Rango Operativo" FontSize="11"
+                           Foreground="{StaticResource TextSecondary}" Margin="0,15,0,4"/>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="1-2" IsChecked="{Binding GbpMicro.Rango12}"
+                              Foreground="{StaticResource TextPrimary}" Margin="0,0,20,0"/>
+                    <CheckBox Content="2-3" IsChecked="{Binding GbpMicro.Rango23}"
+                              Foreground="{StaticResource TextPrimary}" Margin="0,0,20,0"/>
+                    <CheckBox Content="3-4" IsChecked="{Binding GbpMicro.Rango34}"
+                              Foreground="{StaticResource TextPrimary}"/>
+                </StackPanel>
+
+                <!-- Estado del Rango + Dirección, mismo renglón -->
+                <Grid Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Estado del Rango" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding GbpMicro.OpcionesEstadoRango}"
+                                  SelectedItem="{Binding GbpMicro.EstadoRango}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Dirección" FontSize="11"
+                                   Foreground="{StaticResource TextSecondary}" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding GbpMicro.OpcionesDireccion}"
+                                  SelectedItem="{Binding GbpMicro.Direccion}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Comentarios -->
+                <TextBlock Text="Comentarios" FontSize="11"
+                           Foreground="{StaticResource TextSecondary}" Margin="0,15,0,4"/>
+                <TextBox Text="{Binding GbpMicro.Comentarios, UpdateSourceTrigger=LostFocus}"
+                         AcceptsReturn="True" TextWrapping="Wrap"
+                         Height="70" Padding="6,5"
+                         VerticalScrollBarVisibility="Auto"/>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

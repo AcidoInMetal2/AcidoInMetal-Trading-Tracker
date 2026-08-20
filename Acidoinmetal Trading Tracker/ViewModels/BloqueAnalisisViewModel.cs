@@ -19,18 +19,20 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
     {
         private readonly TradingViewImageService _imagenService = new();
 
-        // Por ahora queda fijo en "H1" al arrancar. El nombre se mantiene
-        // "Macroview1" por pedido explícito, pensando en la evolución futura
-        // del concepto (Macroview2, etc. si hiciera falta más adelante).
-        private string _macroview1 = "H1";
+        // Por ahora arranca en el primer valor de OpcionesMarco. El nombre se
+        // mantiene "Macroview1" por pedido explícito, pensando en la evolución
+        // futura del concepto (Macroview2, etc. si hiciera falta más adelante).
+        private string _macroview1;
         public string Macroview1
         {
             get => _macroview1;
             set { _macroview1 = value; OnPropertyChanged(); }
         }
 
-        // Opciones fijas del desplegable de Marco temporal.
-        public string[] OpcionesMarco { get; } = { "H1", "H4", "Diario", "Mensual" };
+        // Opciones del desplegable de Marco temporal. Se reciben por constructor
+        // porque este mismo bloque se reusa en Análisis Macro (H1/H4/Diario/Mensual)
+        // y en Análisis Micro (M15/M5/M3/M2).
+        public string[] OpcionesMarco { get; }
 
         private string _link = string.Empty;
         public string Link
@@ -147,8 +149,10 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
             set { _comentarios = value; OnPropertyChanged(); }
         }
 
-        public BloqueAnalisisViewModel()
+        public BloqueAnalisisViewModel(string[] opcionesMarco)
         {
+            OpcionesMarco = opcionesMarco;
+            _macroview1 = opcionesMarco.Length > 0 ? opcionesMarco[0] : string.Empty;
             ReintentarCommand = new RelayCommand(() => _ = CargarImagenAsync());
             AbrirImagenCommand = new RelayCommand(AbrirImagenEnNavegador, () => !string.IsNullOrEmpty(UrlImagenDirecta));
         }
