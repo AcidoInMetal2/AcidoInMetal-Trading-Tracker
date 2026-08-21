@@ -13,17 +13,16 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
         private static readonly string[] OpcionesMarcoMicro = { "M15", "M5", "M3", "M2" };
 
         // Bloque de cada divisa, con las opciones de marco de Análisis Micro.
-        public BloqueAnalisisViewModel EurMicro { get; } = new(OpcionesMarcoMicro);
-        public BloqueAnalisisViewModel GbpMicro { get; } = new(OpcionesMarcoMicro);
+        public BloqueAnalisisViewModel EurMicro { get; }
+        public BloqueAnalisisViewModel GbpMicro { get; }
 
         public AnalisisMicroViewModel(DatabaseService databaseService, int sesionId)
         {
             _databaseService = databaseService;
             _sesionId = sesionId;
 
-            // TODO: cuando definamos cómo persistir estos datos, guardar
-            // EurMicro.Link / GbpMicro.Link contra este mismo _sesionId, para
-            // que queden agrupados con el resto bajo la misma Fecha.
+            EurMicro = new BloqueAnalisisViewModel(OpcionesMarcoMicro, databaseService, sesionId, "EUR", "MICRO");
+            GbpMicro = new BloqueAnalisisViewModel(OpcionesMarcoMicro, databaseService, sesionId, "GBP", "MICRO");
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

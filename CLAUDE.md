@@ -35,20 +35,34 @@ que corresponda a esa carpeta (ver ejemplos existentes al lado).
 ## Patrón de datos: todo se agrupa por FECHA
 
 Concepto central del dominio: existe una "Sesión Operativa" por día
-(`SesionOperativa.cs`, tabla manejada por `DatabaseService.cs`). Todas las
-pantallas de carga de datos (Trader Status, Análisis Macro, y las que vengan)
-cuelgan de esa misma sesión del día — no tienen su propia fecha suelta.
+(`SesionOperativa.cs` / tabla `SesionesOperativas`, manejada por
+`DatabaseService.cs`). Todas las pantallas de carga de datos cuelgan de esa
+misma sesión del día.
 
-- Al abrir la app, se llama a algo como `ObtenerOCrearSesionPorFecha(DateTime.Now)`:
-  si ya existe una sesión para la fecha de sistema, la reutiliza; si no, crea una
-  nueva. Nunca se altera la fecha de una sesión desde ese flujo normal.
+- `DatabaseService.ObtenerOCrearSesionPorFecha(DateTime fecha)`: si ya existe
+  una sesión para la fecha de sistema, la reutiliza; si no, crea una nueva.
+  **Importante**: existió un bug donde el método viejo (`CrearSesion`) hacía
+  un INSERT ciego sin buscar primero — ya está corregido, no lo repitas.
+- Dentro de la Fecha, hay un segundo nivel de agrupación por **Par** (EUR/GBP)
+  para los datos que lo requieren — hoy eso es Análisis Macro y Análisis
+  Micro, que comparten una sola tabla (`AnalisisPar`) con una columna `Tipo`
+  ('MACRO'/'MICRO') como discriminador, y `UNIQUE(SesionId, Par, Tipo)` para
+  que guardar sea siempre upsert (nunca duplica filas).
+- Los datos que NO se agrupan por Par (como Trader Status) van como columnas
+  directas en `SesionesOperativas`, o en una tabla propia con FK a SesionId
+  sin columna Par — seguir ese mismo criterio para pantallas futuras.
+- Patrón de guardado establecido (ya usado en `TraderStatusViewModel` y en
+  `BloqueAnalisisViewModel`): un método privado `OnCambio()` que se llama
+  desde cada setter de propiedad editable, y guarda automáticamente (upsert)
+  en la base. `BloqueAnalisisViewModel` usa además una bandera
+  `_cargandoDatos` para no disparar guardados durante la carga inicial al
+  arrancar la app.
 - Habrá en el futuro una pantalla aparte para editar sesiones de fechas
-  anteriores — ahí sí se podrá elegir la fecha manualmente. No mezclar ese caso
-  con el flujo normal de apertura de la app.
+  anteriores — ahí sí se podrá elegir la fecha manualmente. No mezclar ese
+  caso con el flujo normal de apertura de la app.
 - Cualquier ViewModel nuevo que guarde datos debe recibir `DatabaseService` +
-  `sesionId` en el constructor (mismo patrón que `TraderStatusViewModel` y
-  `AnalisisMacroViewModel`), y el `DataContext` se asigna desde `MainWindow`,
-  no desde el constructor de la View.
+  `sesionId` en el constructor, y el `DataContext` se asigna desde
+  `MainWindow`, no desde el constructor de la View.
 
 ## Navegación actual
 

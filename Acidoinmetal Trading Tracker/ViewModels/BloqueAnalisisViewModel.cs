@@ -6,18 +6,29 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Acidoinmetal_Trading_Tracker.Models;
 using Acidoinmetal_Trading_Tracker.Services;
 
 namespace Acidoinmetal_Trading_Tracker.ViewModels
 {
     /// <summary>
-    /// Representa un bloque de carga dentro de Análisis Macro: un marco temporal
-    /// (hoy fijo en "H1", a futuro un desplegable), el link de TradingView, y la
-    /// imagen de preview obtenida a partir de ese link.
+    /// Representa un bloque de carga dentro de Análisis Macro/Micro: marco
+    /// temporal, link de TradingView + preview, Rango Operativo, Estado del
+    /// Rango, Dirección y Comentarios. Se guarda solo (upsert) contra
+    /// AnalisisPar cada vez que cambia algo, agrupado por Sesión (Fecha) + Par + Tipo.
     /// </summary>
     public class BloqueAnalisisViewModel : INotifyPropertyChanged
     {
         private readonly TradingViewImageService _imagenService = new();
+        private readonly DatabaseService _databaseService;
+        private readonly int _sesionId;
+        private readonly string _par;
+        private readonly string _tipo;
+
+        // Se pone en true mientras se restauran los datos guardados al
+        // arrancar, para no disparar un guardado innecesario por cada
+        // propiedad que se va asignando durante esa carga inicial.
+        private bool _cargandoDatos = true;
 
         // Por ahora arranca en el primer valor de OpcionesMarco. El nombre se
         // mantiene "Macroview1" por pedido explícito, pensando en la evolución
@@ -26,7 +37,7 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
         public string Macroview1
         {
             get => _macroview1;
-            set { _macroview1 = value; OnPropertyChanged(); }
+            set { _macroview1 = value; OnPropertyChanged(); OnCambio(); }
         }
 
         // Opciones del desplegable de Marco temporal. Se reciben por constructor
@@ -43,6 +54,7 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
                 if (_link == value) return;
                 _link = value;
                 OnPropertyChanged();
+                OnCambio();
                 _ = CargarImagenAsync();
             }
         }
@@ -100,6 +112,7 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
                 OnPropertyChanged(nameof(Rango12));
                 OnPropertyChanged(nameof(Rango23));
                 OnPropertyChanged(nameof(Rango34));
+                OnCambio();
             }
         }
 
@@ -128,7 +141,7 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
         public string? EstadoRango
         {
             get => _estadoRango;
-            set { _estadoRango = value; OnPropertyChanged(); }
+            set { _estadoRango = value; OnPropertyChanged(); OnCambio(); }
         }
 
         // ===================== Dirección =====================
@@ -138,7 +151,7 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
         public string Direccion
         {
             get => _direccion;
-            set { _direccion = value; OnPropertyChanged(); }
+            set { _direccion = value; OnPropertyChanged(); OnCambio(); }
         }
 
         // ===================== Comentarios =====================
@@ -146,15 +159,60 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
         public string Comentarios
         {
             get => _comentarios;
-            set { _comentarios = value; OnPropertyChanged(); }
+            set { _comentarios = value; OnPropertyChanged(); OnCambio(); }
         }
 
-        public BloqueAnalisisViewModel(string[] opcionesMarco)
+        public BloqueAnalisisViewModel(string[] opcionesMarco, DatabaseService databaseService, int sesionId, string par, string tipo)
         {
             OpcionesMarco = opcionesMarco;
             _macroview1 = opcionesMarco.Length > 0 ? opcionesMarco[0] : string.Empty;
+            _databaseService = databaseService;
+            _sesionId = sesionId;
+            _par = par;
+            _tipo = tipo;
+
             ReintentarCommand = new RelayCommand(() => _ = CargarImagenAsync());
             AbrirImagenCommand = new RelayCommand(AbrirImagenEnNavegador, () => !string.IsNullOrEmpty(UrlImagenDirecta));
+
+            CargarDesdeBaseDeDatos();
+        }
+
+        private void CargarDesdeBaseDeDatos()
+        {
+            var datos = _databaseService.ObtenerAnalisisPar(_sesionId, _par, _tipo);
+            if (datos != null)
+            {
+                if (!string.IsNullOrEmpty(datos.Marco))
+                    Macroview1 = datos.Marco;
+                RangoOperativo = datos.RangoOperativo;
+                EstadoRango = datos.EstadoRango;
+                Direccion = string.IsNullOrEmpty(datos.Direccion) ? "SIN DEFINIR" : datos.Direccion;
+                Comentarios = datos.Comentarios ?? string.Empty;
+                // Al final: si había un link guardado, esto también dispara
+                // la recarga de la imagen de preview automáticamente.
+                Link = datos.Link ?? string.Empty;
+            }
+
+            // Recién ahora se habilita el guardado automático ante cambios.
+            _cargandoDatos = false;
+        }
+
+        private void OnCambio()
+        {
+            if (_cargandoDatos) return;
+
+            _databaseService.GuardarAnalisisPar(_sesionId, _par, _tipo, new AnalisisPar
+            {
+                SesionId = _sesionId,
+                Par = _par,
+                Tipo = _tipo,
+                Marco = Macroview1,
+                Link = Link,
+                RangoOperativo = RangoOperativo,
+                EstadoRango = EstadoRango,
+                Direccion = Direccion,
+                Comentarios = Comentarios
+            });
         }
 
         private void AbrirImagenEnNavegador()

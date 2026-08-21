@@ -14,7 +14,7 @@ namespace AcidoInMetalTradingTracker
             InitializeComponent();
 
             _databaseService = new DatabaseService();
-            int sesionId = _databaseService.CrearSesion(DateTime.Now);
+            int sesionId = _databaseService.ObtenerOCrearSesionPorFecha(DateTime.Now);
 
             // Precalienta la conexión HTTPS para que la primera carga de imagen
             // de TradingView no pague el costo de la conexión "en frío".

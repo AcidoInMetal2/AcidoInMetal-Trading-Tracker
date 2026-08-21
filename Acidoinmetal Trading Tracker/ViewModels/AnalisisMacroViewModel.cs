@@ -13,17 +13,16 @@ namespace Acidoinmetal_Trading_Tracker.ViewModels
         private static readonly string[] OpcionesMarcoMacro = { "H1", "H4", "Diario", "Mensual" };
 
         // Bloque de cada divisa, con las opciones de marco de Análisis Macro.
-        public BloqueAnalisisViewModel EurH1 { get; } = new(OpcionesMarcoMacro);
-        public BloqueAnalisisViewModel GbpH1 { get; } = new(OpcionesMarcoMacro);
+        public BloqueAnalisisViewModel EurH1 { get; }
+        public BloqueAnalisisViewModel GbpH1 { get; }
 
         public AnalisisMacroViewModel(DatabaseService databaseService, int sesionId)
         {
             _databaseService = databaseService;
             _sesionId = sesionId;
 
-            // TODO: cuando definamos cómo persistir estos datos, guardar
-            // EurH1.Link / GbpH1.Link contra este mismo _sesionId, para que
-            // queden agrupados con Trader Status bajo la misma Fecha.
+            EurH1 = new BloqueAnalisisViewModel(OpcionesMarcoMacro, databaseService, sesionId, "EUR", "MACRO");
+            GbpH1 = new BloqueAnalisisViewModel(OpcionesMarcoMacro, databaseService, sesionId, "GBP", "MACRO");
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
